@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>بطاقة معايدة عيد الفطر — مجودة</title>
 <!--pwa--><link rel="icon" type="image/png" sizes="32x32" href="/favicon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="app.webmanifest"><meta name="apple-mobile-web-app-title" content="معايدة الفطر"><meta name="application-name" content="معايدة الفطر"><meta name="theme-color" content="#0a6d73"><!--/pwa-->
-<meta name="description" content="صمّم بطاقة معايدة عيد الفطر لعائلتك أو شركتك من 17 تصميماً بخطوط عربية مذهّبة، أضف شعارك وانشر رابطاً يكتب فيه كل مستلم اسمه ويحفظ البطاقة.">
-<meta property="og:title" content="بطاقة معايدة عيد الفطر — مجودة"><meta property="og:description" content="صمّم بطاقة معايدة عيد الفطر لعائلتك أو شركتك من 17 تصميماً بخطوط عربية مذهّبة، أضف شعارك وانشر رابطاً يكتب فيه كل مستلم اسمه ويحفظ البطاقة."><meta property="og:type" content="website"><meta property="og:image" content="https://eidcard.majoodah.com/img/og.jpg">
+<meta name="description" content="صمّم بطاقة معايدة عيد الفطر لعائلتك أو شركتك من 15 تصميماً فاخراً بخطوط عربية مذهّبة، أضف شعارك وانشر رابطاً يكتب فيه كل مستلم اسمه ويحفظ البطاقة.">
+<meta property="og:title" content="بطاقة معايدة عيد الفطر — مجودة"><meta property="og:description" content="صمّم بطاقة معايدة عيد الفطر لعائلتك أو شركتك من 15 تصميماً فاخراً بخطوط عربية مذهّبة، أضف شعارك وانشر رابطاً يكتب فيه كل مستلم اسمه ويحفظ البطاقة."><meta property="og:type" content="website"><meta property="og:image" content="https://eidcard.majoodah.com/img/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Baloo+Bhaijaan+2:wght@600;700;800&display=swap">
 <style>
@@ -117,7 +117,7 @@ select::-ms-expand{display:none}
    <div class="card">
     <div class="row" style="justify-content:space-between"><h2>اختر التصميم</h2>
      <div class="seg" id="sizeSeg"><button data-size="portrait" aria-pressed="true">منشور ٤:٥</button><button data-size="story" aria-pressed="false">ستوري ٩:١٦</button></div></div>
-    <p class="lead">كل التصاميم مرسومة خصيصاً، ويمكنك تغيير الألوان والخطوط والمواضع بعد الاختيار — أو رفع خلفية من جهازك.</p>
+    <p class="lead">تصاميم فاخرة بخلفيات مصمّمة لكل مناسبة ومواضع كتابة مضبوطة لكل تصميم. يمكنك بعد الاختيار تغيير الألوان والخطوط والمواضع — أو رفع خلفية من جهازك.</p>
     <div class="thumbs" id="thumbs"></div>
    </div>
   </section>
@@ -163,7 +163,7 @@ select::-ms-expand{display:none}
     <div class="row" style="margin-top:8px"><button class="btn small" id="bgDel" hidden>إزالة الخلفية</button></div>
     <div class="grid" style="margin-top:10px">
      <div class="f"><label>التعتيم <span data-out="photo.dim"></span></label><input type="range" min="0" max="0.85" step="0.05" data-b="photo.dim" data-n></div>
-     <div class="f"><span>&nbsp;</span><label class="chk"><input type="checkbox" data-b="photo.deco"> إظهار زخارف التصميم فوق الصورة</label></div>
+     <div class="f" id="decoF"><span>&nbsp;</span><label class="chk"><input type="checkbox" data-b="photo.deco"> إظهار زخارف التصميم فوق الصورة</label></div>
     </div>
    </div>
    <div class="card">
@@ -200,7 +200,8 @@ select::-ms-expand{display:none}
 <div class="toast" id="toast"></div>
 <script>
 /* محرّك بطاقات المعايدة — مجودة
-   كل الزخارف مرسومة بالكود على canvas (لا صور خارجية)، والخطوط من Google Fonts (رخصة OFL).
+   التصاميم الحالية خلفيات مصوّرة من الموقع نفسه (/bg/) مع مواضع نصوص مضبوطة لكل خلفية؛ والتصاميم المرسومة بالكود القديمة
+   باقية للبطاقات المنشورة سابقاً فقط. الخطوط من Google Fonts (رخصة OFL).
    يستخدمه المحرّر (fitr/adha) وصفحة البطاقة المنشورة (/c/) معاً. */
 (function (G) {
 'use strict';
@@ -220,7 +221,7 @@ function rng(seed) { var a = 0; for (var i = 0; i < seed.length; i++) a = (a * 3
 /* ---------- الخطوط ---------- */
 // sc: معامل يوازن الحجم البصري بين الخطوط، ink: خط ملوّن لا يقبل تغيير اللون
 var FONTS = {
-  ruqaa:    { f: 'Aref Ruqaa', w: 700, n: 'رقعة', sc: 1 },
+  ruqaa:    { f: 'Aref Ruqaa', w: 700, n: 'رقعة', sc: 1, h: 1.42 },
   ruwudu:   { f: 'Ruwudu', w: 700, n: 'ديواني', sc: 0.92 },
   vibes:    { f: 'Vibes', w: 400, n: 'زخرفي', sc: 1.05 },
   qahiri:   { f: 'Qahiri', w: 400, n: 'كوفي قاهري', sc: 1.05, sp: 3 },
@@ -238,7 +239,7 @@ var FONTS = {
   amiri:    { f: 'Amiri', w: 700, n: 'أميري', sc: 1 },
   lateef:   { f: 'Lateef', w: 700, n: 'لطيف', sc: 1.25 },
   alkalami: { f: 'Alkalami', w: 400, n: 'القلمي', sc: 0.9 },
-  gulzar:   { f: 'Gulzar', w: 400, n: 'گلزار', sc: 0.95 },
+  gulzar:   { f: 'Gulzar', w: 400, n: 'گلزار', sc: 0.95, h: 1.55 },
   messiri:  { f: 'El Messiri', w: 700, n: 'المسيري', sc: 1 },
   ruqaaink: { f: 'Aref Ruqaa Ink', w: 700, n: 'رقعة ملوّنة', sc: 1, ink: 1 },
   reemink:  { f: 'Reem Kufi Ink', w: 700, n: 'كوفي ملوّن', sc: 0.95, ink: 1, sp: 2 },
@@ -252,9 +253,10 @@ var CALLI = ['ruqaa', 'ruwudu', 'vibes', 'qahiri', 'reemkufi', 'reemfun', 'kufam
 var TEXTF = ['amiri', 'scheher', 'naskh', 'messiri', 'tajawal', 'cairo', 'changa', 'reemkufi', 'ruqaa', 'mirza', 'lateef', 'marhey', 'alkalami', 'lalezar', 'rakkas', 'katibeh'];
 var FONT_CSS = 'https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Aref+Ruqaa+Ink:wght@700&family=Ruwudu:wght@700&family=Vibes&family=Qahiri&family=Reem+Kufi:wght@500;700&family=Reem+Kufi+Fun:wght@700&family=Reem+Kufi+Ink&family=Kufam:wght@800&family=Katibeh&family=Rakkas&family=Lalezar&family=Marhey:wght@700&family=Badeen+Display&family=Blaka&family=Jomhuria&family=Mirza:wght@700&family=Amiri:wght@400;700&family=Lateef:wght@700&family=Alkalami&family=Gulzar&family=El+Messiri:wght@500;700&family=Scheherazade+New:wght@700&family=Noto+Naskh+Arabic:wght@600&family=Tajawal:wght@500;700&family=Cairo:wght@700&family=Changa:wght@600&display=swap';
 function fontStr(id, px) { var F = FONTS[id] || FONTS.amiri; return F.w + ' ' + Math.round(px * F.sc) + 'px "' + F.f + '"'; }
-function loadFonts(st, extra) {
-  if (!document.fonts || !document.fonts.load) return Promise.resolve();
-  var jobs = [];
+function loadFonts(st, extra, small) {
+  var bgp = loadBg(st.tpl, small);
+  if (!document.fonts || !document.fonts.load) return bgp;
+  var jobs = [bgp];
   LAYERS.forEach(function (k) {
     var L = st.L[k]; if (!L || !L.f) return;
     var t = (L.t || '') + (k === 'name' ? (L.ph || '') + (extra || '') : '');
@@ -671,6 +673,212 @@ T({ id: 'arafat', n: 'فجر عرفة', occ: 'adha', pal: { bg: '#f7c98a', bg2: 
     c.fillStyle = dk(P.sil, 0.25); c.beginPath(); c.moveTo(0, H); c.lineTo(0, H * 0.92); c.quadraticCurveTo(W * 0.5, H * 0.87, W, H * 0.93); c.lineTo(W, H); c.fill();
     for (var i = 0; i < 70; i++) { c.fillStyle = 'rgba(255,255,255,.85)'; c.beginPath(); c.arc(R() * W, H * 0.935 + R() * H * 0.05, 2.5, 0, TAU); c.fill(); } } });
 
+/* التصاميم المرسومة أعلاه «قديمة»: تبقى قابلة للعرض للبطاقات المنشورة لكنها لا تظهر في قائمة الاختيار */
+TPL.forEach(function (t) { t.legacy = 1; });
+
+/* ---------- تصاميم الخلفيات المصوّرة (bg/<id>.jpg بمقاس 1080×1350 و bg/t/<id>.jpg مصغّرة) ----------
+   col: [x مركز العمود، عرض العمود، أعلى المنطقة الفارغة، أسفلها] — تُرصّ العناصر فيها تلقائياً بالترتيب order
+   sep: عناصر خارج العمود {k: [x, y]}، sz: أحجام مخصّصة، scrim: تعتيم ناعم لزيادة الوضوح
+   sx: طريقة الستوري — stretch (مدّ شريط a..b)، mirror (تكرار الشريط معكوساً)، cover (قصّ حول fx) */
+var BG_BASE = '/bg/';
+function I(id, n, pal, look, o) { o.id = id; o.n = n; o.occ = id.slice(0, 4); o.img = 1; o.pal = pal; o.look = look; T(o); }
+var GOLD = ['messiri', 'solid', 'acc'];
+// فطر
+I('fitr-01', 'مخمل زمردي', { bg: '#0f4a3c', bg2: '#05241d', acc: '#e8c47a', ink: '#f7eed6' },
+  { g: ['ruqaa', 'foil', null, 'dots'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow', '#ffffff'], d: ['amiri', 'shadow'], y: GOLD },
+  { col: [0.45, 0.62, 0.25, 0.75], sep: { sender: [0.47, 0.875] }, scrim: [['r', 0.45, 0.5, 0.45, 0.32, '#021511', 0.45]], sx: { m: 'mirror', a: 0.42, b: 0.62 } });
+I('fitr-02', 'قوس وردي', { bg: '#f3d9d2', bg2: '#8a4a42', acc: '#9a5b3c', ink: '#5e3434' },
+  { g: ['ruwudu', 'two', '#7a3b33', 'none', '#b98a4a'], s: ['amiri'], n: ['messiri', 'solid', '#7a3b33'], d: ['amiri'], y: ['messiri', 'solid', '#b07f45'] },
+  { col: [0.5, 0.42, 0.29, 0.78], sx: { m: 'mirror', a: 0.42, b: 0.6 } });
+I('fitr-03', 'ليلة بنفسجية', { bg: '#3b2a78', bg2: '#140c33', acc: '#f4d58c', ink: '#ffffff' },
+  { g: ['alkalami', 'foil', null, 'swash'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow'], d: ['amiri', 'shadow'], y: GOLD },
+  { col: [0.52, 0.5, 0.26, 0.6], order: ['year', 'greeting', 'sub', 'name'], sep: { logo: [0.6, 0.1], sender: [0.5, 0.92] }, sz: { logo: 110 },
+    scrim: [['r', 0.53, 0.43, 0.42, 0.2, '#160c35', 0.5], ['lin', 0.84, 1, '#0c0726', 0, 0.75]], sx: { m: 'stretch', a: 0.36, b: 0.58 } });
+I('fitr-04', 'رخام أبيض', { bg: '#f4ead8', bg2: '#6b5530', acc: '#9b7428', ink: '#4a3a22' },
+  { g: ['ruqaa', 'two', '#7d5a1c', 'dots', '#c39a45'], s: ['amiri'], n: ['messiri', 'solid', '#7d5a1c'], d: ['amiri'], y: ['messiri', 'solid', '#a6803a'] },
+  { col: [0.5, 0.46, 0.24, 0.74], sz: { greeting: 160 }, scrim: [['r', 0.5, 0.48, 0.3, 0.28, '#fbf5ea', 0.55]], sx: { m: 'mirror', a: 0.46, b: 0.62 } });
+I('fitr-05', 'إطار كحلي ذهبي', { bg: '#17294a', bg2: '#0a1428', acc: '#e3bf6c', ink: '#f4ead2' },
+  { g: ['ruwudu', 'foil', null, 'none'], s: ['amiri'], n: ['messiri', 'solid', '#ffffff'], d: ['amiri'], y: GOLD },
+  { col: [0.5, 0.62, 0.24, 0.78], sx: { m: 'mirror', a: 0.52, b: 0.66 } });
+I('fitr-06', 'غروب الصحراء', { bg: '#b0603c', bg2: '#3d1f1a', acc: '#fff3dc', ink: '#ffffff' },
+  { g: ['ruqaa', 'shadow', '#fffaf0', 'none'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow'], d: ['amiri', 'shadow'], y: ['messiri', 'shadow', '#fff0d0'] },
+  { col: [0.45, 0.64, 0.05, 0.56], sep: { sender: [0.5, 0.9] }, scrim: [['lin', 0, 0.55, '#3a1d2a', 0.35, 0], ['lin', 0.8, 1, '#2a140c', 0, 0.55]], sx: { m: 'stretch', a: 0.05, b: 0.55 } });
+I('fitr-07', 'بالونات العيد', { bg: '#f3e6dd', bg2: '#5b3a6b', acc: '#6a3f7a', ink: '#4f3a52' },
+  { g: ['rakkas', 'two', '#6a3f7a', 'none', '#b8893a'], s: ['tajawal'], n: ['lalezar', 'solid', '#6a3f7a'], d: ['tajawal'], y: ['tajawal', 'solid', '#b07f3a'] },
+  { col: [0.5, 0.5, 0.29, 0.73], scrim: [['r', 0.5, 0.5, 0.3, 0.24, '#fbf3ea', 0.6]], sx: { m: 'mirror', a: 0.3, b: 0.46 } });
+I('fitr-08', 'هلال أسود وذهبي', { bg: '#1a1712', bg2: '#060504', acc: '#e2c27c', ink: '#f2e6c8' },
+  { g: ['vibes', 'foil', null, 'none'], s: ['amiri'], n: ['messiri', 'solid', '#ffffff'], d: ['amiri'], y: GOLD },
+  { col: [0.61, 0.56, 0.17, 0.6], sep: { sender: [0.5, 0.925] }, scrim: [['r', 0.62, 0.4, 0.34, 0.24, '#000000', 0.55]], sx: { m: 'stretch', a: 0.02, b: 0.18 } });
+I('fitr-09', 'ورود مائية', { bg: '#f3eee4', bg2: '#4a5a44', acc: '#3e5a41', ink: '#4a4038' },
+  { g: ['gulzar', 'two', '#3e5a41', 'none', '#b08a3a'], s: ['amiri'], n: ['messiri', 'solid', '#3e5a41'], d: ['amiri'], y: ['messiri', 'solid', '#a8843a'] },
+  { order: ['logo', 'greeting', 'sub', 'name', 'sender', 'year'], col: [0.5, 0.62, 0.19, 0.66], scrim: [['r', 0.5, 0.42, 0.38, 0.26, '#f6f1e8', 0.5]], sx: { m: 'mirror', a: 0.3, b: 0.5 } });
+I('fitr-10', 'زجاج عصري', { bg: '#e8eef0', bg2: '#0a4f55', acc: '#0a6d73', ink: '#23393c' },
+  { g: ['reemkufi', 'two', '#0a6d73', 'none', '#b8913e'], s: ['tajawal'], n: ['tajawal', 'solid', '#0a6d73'], d: ['tajawal'], y: ['tajawal', 'solid', '#a8843a'] },
+  { col: [0.55, 0.6, 0.06, 0.6], sz: { greeting: 150 }, scrim: [['r', 0.55, 0.32, 0.4, 0.3, '#f4f7f8', 0.5]], sx: { m: 'stretch', a: 0.04, b: 0.3 } });
+I('fitr-11', 'ألعاب نارية في الرياض', { bg: '#14254a', bg2: '#070d1f', acc: '#f1cd7a', ink: '#ffffff' },
+  { g: ['ruqaa', 'foil', null, 'stars'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow'], d: ['amiri', 'shadow'], y: GOLD },
+  { col: [0.5, 0.56, 0.05, 0.62], scrim: [['r', 0.5, 0.33, 0.36, 0.3, '#060c1e', 0.5]], sx: { m: 'stretch', a: 0.25, b: 0.62 } });
+I('fitr-12', 'جلسة دافئة', { bg: '#d8b894', bg2: '#4a2e18', acc: '#6b3a1a', ink: '#4a2e18' },
+  { g: ['ruqaa', 'two', '#4e2810', 'none', '#8a5a1e'], s: ['amiri'], n: ['messiri', 'solid', '#5a2e12'], d: ['amiri'], y: ['messiri', 'solid', '#7a4e1a'] },
+  { col: [0.68, 0.48, 0.05, 0.6], sz: { greeting: 150 }, scrim: [['r', 0.68, 0.32, 0.32, 0.34, '#f0dcc0', 0.55]], sx: { m: 'extend', top: 0.55 }, scol: [0.66, 0.5, 0.1, 0.56] });
+I('fitr-13', 'أقواس نعناعية', { bg: '#cfe0cc', bg2: '#2f4a34', acc: '#2f4a34', ink: '#2f4436' },
+  { g: ['amiri', 'two', '#2f4a34', 'dots', '#7e6220'], s: ['amiri'], n: ['messiri', 'solid', '#2f4a34'], d: ['amiri'], y: ['messiri', 'solid', '#9a7a32'] },
+  { col: [0.51, 0.5, 0.24, 0.74], sz: { greeting: 150 }, sx: { m: 'mirror', a: 0.38, b: 0.56 } });
+I('fitr-14', 'أرابيسك عنابي', { bg: '#6a1222', bg2: '#2a050c', acc: '#ecc878', ink: '#fbecd4' },
+  { g: ['ruqaa', 'foil', null, 'cartouche'], s: ['amiri'], n: ['messiri', 'solid', '#ffffff'], d: ['amiri'], y: GOLD },
+  { col: [0.5, 0.62, 0.26, 0.86], sx: { m: 'mirror', a: 0.42, b: 0.62 } });
+I('fitr-15', 'موج فيروزي', { bg: '#0b4a50', bg2: '#04252a', acc: '#efcd82', ink: '#f5f0e2' },
+  { g: ['ruwudu', 'foil', null, 'none'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow', '#ffffff'], d: ['amiri', 'shadow'], y: GOLD },
+  { col: [0.69, 0.5, 0.05, 0.6], sz: { greeting: 150 }, scrim: [['r', 0.7, 0.32, 0.32, 0.32, '#03262b', 0.5]], sx: { m: 'extend', top: 1 }, scol: [0.68, 0.5, 0.12, 0.62] });
+// أضحى
+I('adha-01', 'فجر عرفة', { bg: '#c8763a', bg2: '#2a2238', acc: '#ffffff', ink: '#ffffff' },
+  { g: ['ruqaa', 'shadow', '#ffffff', 'none'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow', '#fff3d6'], d: ['amiri', 'shadow'], y: ['messiri', 'shadow', '#fff3d6'] },
+  { col: [0.5, 0.66, 0.04, 0.54], sep: { sender: [0.5, 0.925] }, scrim: [['lin', 0, 0.55, '#1c2a4a', 0.45, 0], ['lin', 0.82, 1, '#1a120c', 0, 0.6]], sx: { m: 'stretch', a: 0.04, b: 0.5 } });
+I('adha-02', 'خروف العيد', { bg: '#fbe6cf', bg2: '#6a3e1e', acc: '#a8482a', ink: '#5a3a24' },
+  { g: ['reemfun', 'two', '#a8482a', 'none', '#d08a2a'], s: ['tajawal'], n: ['marhey', 'solid', '#a8482a'], d: ['tajawal'], y: ['tajawal', 'solid', '#b07a3a'] },
+  { col: [0.56, 0.56, 0.04, 0.5], sz: { greeting: 150, logo: 110 }, scrim: [['r', 0.56, 0.26, 0.36, 0.26, '#fff4e6', 0.45]], sx: { m: 'extend', top: 1 }, scol: [0.55, 0.6, 0.06, 0.62] });
+I('adha-03', 'محراب زمردي', { bg: '#0f4636', bg2: '#06231b', acc: '#e6c47a', ink: '#f6eed8' },
+  { g: ['ruqaa', 'foil', null, 'dots'], s: ['amiri'], n: ['messiri', 'solid', '#ffffff'], d: ['amiri'], y: GOLD },
+  { col: [0.535, 0.44, 0.24, 0.78], sx: { m: 'mirror', a: 0.4, b: 0.56 } });
+I('adha-04', 'قهوة وتمر', { bg: '#e2d2bb', bg2: '#4a2c16', acc: '#5a2e14', ink: '#4a2c16' },
+  { g: ['ruqaa', 'two', '#5a2e14', 'none', '#a8742a'], s: ['amiri'], n: ['messiri', 'solid', '#5a2e14'], d: ['amiri'], y: ['messiri', 'solid', '#9a6a2a'] },
+  { order: ['logo', 'greeting', 'sub', 'name', 'sender', 'year'], col: [0.52, 0.7, 0.03, 0.46], sz: { greeting: 160 }, scrim: [['r', 0.52, 0.22, 0.42, 0.24, '#efe4d2', 0.45]], sx: { m: 'mirror', a: 0.02, b: 0.2 } });
+I('adha-05', 'مكة وقت الغروب', { bg: '#c0603a', bg2: '#2a1418', acc: '#fff3dc', ink: '#ffffff' },
+  { g: ['ruqaa', 'shadow', '#fffaf0', 'none'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow'], d: ['amiri', 'shadow'], y: ['messiri', 'shadow', '#fff0d0'] },
+  { order: ['logo', 'greeting', 'sub', 'name', 'sender', 'year'], col: [0.5, 0.66, 0.04, 0.45], sep: { sender: [0.5, 0.94] }, scrim: [['lin', 0, 0.5, '#2a1424', 0.5, 0], ['lin', 0.85, 1, '#140a08', 0, 0.55]], sx: { m: 'stretch', a: 0.04, b: 0.4 } });
+I('adha-06', 'قافلة الجِمال', { bg: '#c86a3a', bg2: '#3a1a14', acc: '#fff3dc', ink: '#ffffff' },
+  { g: ['ruwudu', 'shadow', '#fffaf0', 'none'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow'], d: ['amiri', 'shadow'], y: ['messiri', 'shadow', '#fff0d0'] },
+  { col: [0.5, 0.66, 0.05, 0.55], sep: { sender: [0.5, 0.9] }, scrim: [['lin', 0, 0.55, '#2e1f4a', 0.4, 0], ['lin', 0.8, 1, '#2a120a', 0, 0.5]], sx: { m: 'stretch', a: 0.05, b: 0.52 } });
+I('adha-07', 'رخام ومنصة', { bg: '#f3ebdc', bg2: '#5a4420', acc: '#8a6424', ink: '#4a3a22' },
+  { g: ['ruqaa', 'two', '#7d5a1c', 'none', '#c39a45'], s: ['amiri'], n: ['messiri', 'solid', '#7d5a1c'], d: ['amiri', 'solid', '#6a5028'], y: ['messiri', 'solid', '#a6803a'] },
+  { col: [0.5, 0.42, 0.16, 0.7], sep: { sender: [0.5, 0.808] }, order: ['logo', 'year', 'greeting', 'sub', 'name'], sz: { sender: 34 }, sx: { m: 'mirror', a: 0.36, b: 0.47, n: 4 } });
+I('adha-08', 'ليلة نيلية', { bg: '#1a2550', bg2: '#080d24', acc: '#f1cd7a', ink: '#ffffff' },
+  { g: ['alkalami', 'foil', null, 'swash'], s: ['amiri', 'shadow'], n: ['messiri', 'shadow'], d: ['amiri', 'shadow'], y: GOLD },
+  { col: [0.52, 0.58, 0.3, 0.66], order: ['year', 'greeting', 'sub', 'name'], sep: { logo: [0.62, 0.11], sender: [0.5, 0.94] }, sz: { logo: 110 },
+    scrim: [['r', 0.52, 0.48, 0.4, 0.2, '#070c22', 0.5], ['lin', 0.86, 1, '#05081a', 0, 0.7]], sx: { m: 'stretch', a: 0.36, b: 0.62 } });
+I('adha-09', 'زهور برية', { bg: '#efe8df', bg2: '#5a3a4a', acc: '#6b3b5a', ink: '#4a3a40' },
+  { g: ['gulzar', 'two', '#6b3b5a', 'none', '#b08a3a'], s: ['amiri'], n: ['messiri', 'solid', '#6b3b5a'], d: ['amiri'], y: ['messiri', 'solid', '#a8843a'] },
+  { order: ['logo', 'greeting', 'sub', 'name', 'sender', 'year'], col: [0.6, 0.56, 0.16, 0.6], scrim: [['r', 0.58, 0.38, 0.36, 0.26, '#f3ede5', 0.45]], sx: { m: 'mirror', a: 0.32, b: 0.48 } });
+I('adha-10', 'كحلي رسمي', { bg: '#14284a', bg2: '#081428', acc: '#e3c278', ink: '#f2ead6' },
+  { g: ['reemkufi', 'foil', null, 'none'], s: ['tajawal'], n: ['tajawal', 'solid', '#ffffff'], d: ['tajawal'], y: ['tajawal', 'solid', 'acc'] },
+  { col: [0.66, 0.56, 0.05, 0.62], sz: { greeting: 150 }, sx: { m: 'mirror', a: 0.31, b: 0.4, n: 4 } });
+I('adha-11', 'قوس أسود وذهبي', { bg: '#1a1712', bg2: '#060504', acc: '#e2c27c', ink: '#f2e6c8' },
+  { g: ['ruwudu', 'foil', null, 'none'], s: ['amiri'], n: ['messiri', 'solid', '#ffffff'], d: ['amiri'], y: GOLD },
+  { col: [0.75, 0.42, 0.06, 0.6], sz: { greeting: 140 }, scrim: [['r', 0.76, 0.33, 0.26, 0.32, '#000000', 0.45]], sx: { m: 'stretch', a: 0.02, b: 0.2 } });
+I('adha-12', 'أقواس طينية', { bg: '#c97c4c', bg2: '#3e1c0c', acc: '#3e1c0c', ink: '#3e1c0c' },
+  { g: ['ruqaa', 'two', '#3e1a0a', 'none', '#7a3a14'], s: ['amiri'], n: ['messiri', 'solid', '#3e1a0a'], d: ['amiri'], y: ['messiri', 'solid', '#5a2a10'] },
+  { col: [0.65, 0.5, 0.04, 0.6], sz: { greeting: 150 }, scrim: [['r', 0.66, 0.3, 0.32, 0.32, '#e9a874', 0.4]], sx: { m: 'stretch', a: 0.02, b: 0.3 } });
+I('adha-13', 'غيوم وخراف', { bg: '#dbe8f3', bg2: '#2c4870', acc: '#2c4870', ink: '#2c4060' },
+  { g: ['reemfun', 'two', '#2c4870', 'none', '#b8913e'], s: ['tajawal'], n: ['marhey', 'solid', '#2c4870'], d: ['tajawal'], y: ['tajawal', 'solid', '#a8843a'] },
+  { col: [0.5, 0.5, 0.25, 0.72], sz: { greeting: 140 }, sx: { m: 'mirror', a: 0.425, b: 0.5, n: 4 } });
+I('adha-14', 'أرابيسك زمردي', { bg: '#0f4a32', bg2: '#052418', acc: '#ecc878', ink: '#f6eed8' },
+  { g: ['ruqaa', 'foil', null, 'cartouche'], s: ['amiri'], n: ['messiri', 'solid', '#ffffff'], d: ['amiri'], y: GOLD },
+  { col: [0.5, 0.6, 0.26, 0.84], sx: { m: 'mirror', a: 0.36, b: 0.56 } });
+I('adha-15', 'موج كهرماني', { bg: '#e8b48a', bg2: '#3a1026', acc: '#4a1630', ink: '#4a1630' },
+  { g: ['ruqaa', 'two', '#5a1a3a', 'none', '#a0522d'], s: ['amiri'], n: ['messiri', 'solid', '#5a1a3a'], d: ['amiri'], y: ['messiri', 'solid', '#8a4a2a'] },
+  { col: [0.68, 0.5, 0.04, 0.48], sz: { greeting: 150 }, scrim: [['r', 0.7, 0.24, 0.34, 0.26, '#f6d2b0', 0.4]], sx: { m: 'extend', top: 1 }, scol: [0.66, 0.54, 0.1, 0.56] });
+
+/* تحميل صور الخلفيات عند الحاجة فقط (الصورة الكاملة للتصميم المختار، والمصغّرة لقائمة الاختيار) */
+var BGI = {}, bgL = [];
+function bgSrc(id, small) { return BG_BASE + (small ? 't/' : '') + id + '.jpg'; }
+function loadBg(id, small) {
+  var t = tplById(id); if (!t.img || typeof Image === 'undefined') return Promise.resolve(null);
+  var k = id + (small ? ':t' : ''), e = BGI[k];
+  if (!e) { e = BGI[k] = { img: null }; e.p = new Promise(function (ok) { var im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
+    im.onload = function () { e.img = im; ok(im); bgL.forEach(function (f) { try { f(id); } catch (x) {} }); }; im.onerror = function () { delete BGI[k]; ok(null); }; im.src = bgSrc(id, small); }); }
+  return e.p;
+}
+function bgOf(id, small) { var f = BGI[id], s = BGI[id + ':t']; f = f && f.img; s = s && s.img; return small ? (s || f) : (f || s); }
+function onBg(fn) { bgL.push(fn); }
+
+/* تحويل مواضع المنشور إلى الستوري حسب طريقة التمديد */
+var PH = 1350, XH = 1920 - 1350;
+function storyY(t, y) { var X = t.sx || { m: 'stretch', a: 0.3, b: 0.6 }; if (X.m === 'cover') return y;
+  if (X.m === 'extend') return (y * PH + XH * (X.top == null ? 1 : X.top)) / 1920;
+  var a = X.a * PH, b = X.b * PH, p = y * PH;
+  return (p <= a ? p : p <= b ? a + (p - a) * (b - a + XH) / (b - a) : p + XH) / 1920; }
+function coverBox(t, W, iw, ih, H) { var s = H / ih, dw = iw * s, fx = (t.sx && t.sx.fx != null) ? t.sx.fx : 0.5; return { s: s, dw: dw, ox: Math.max(0, Math.min(dw - W, fx * dw - W / 2)) }; }
+function storyX(t, x) { if (!t.sx || t.sx.m !== 'cover') return x; var b = coverBox(t, 1080, 1080, 1350, 1920); return (x * b.dw - b.ox) / 1080; }
+
+function paintImg(c, t, W, H, P, story, small) {
+  var im = bgOf(t.id, small);
+  if (!im) { fill(c, W, H, vg(c, 0, H, [P.bg, P.bg2])); return; }
+  c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
+  var iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height;
+  if (!story) c.drawImage(im, 0, 0, iw, ih, 0, 0, W, H);
+  else {
+    var X = t.sx || { m: 'stretch', a: 0.3, b: 0.6 }, k = W / iw, hp = ih * k, xh = H - hp;
+    if (X.m === 'cover') { var cb = coverBox(t, W, iw, ih, H); c.drawImage(im, 0, 0, iw, ih, -cb.ox, 0, cb.dw, H); }
+    else if (X.m === 'extend') extendImg(c, im, iw, ih, W, H, hp, xh * (X.top == null ? 1 : X.top));
+    else {
+      var a = X.a * ih, b = X.b * ih, slice = function (sy, sh, dy, dh, flip) { if (sh <= 0 || dh <= 0) return; c.save(); if (flip) { c.translate(0, dy + dh); c.scale(1, -1); dy = 0; } c.drawImage(im, 0, sy, iw, sh, 0, dy, W, dh + 1); c.restore(); };
+      if (X.m === 'mirror') {
+        var n = X.n || 2, th = xh / n;
+        slice(0, b, 0, b * k);
+        for (var i = 0; i < n; i++) slice(a, b - a, b * k + i * th, th, i % 2 === 0);
+        slice(b, ih - b, b * k + xh, (ih - b) * k);
+      } else {
+        slice(0, a, 0, a * k); slice(a, b - a, a * k, (b - a) * k + xh); slice(b, ih - b, b * k + xh, (ih - b) * k);
+      }
+    }
+  }
+  (t.scrim || []).forEach(function (s) { scrim(c, t, s, W, H, story); });
+}
+// الستوري بامتداد ضبابي: الصورة كاملة بحوافّ متلاشية فوق نسخة معكوسة ومموّهة منها تملأ الفراغ أعلاها/أسفلها
+function mkCanvas(w, h) { var x = document.createElement('canvas'); x.width = Math.max(1, Math.round(w)); x.height = Math.max(1, Math.round(h)); return x; }
+function extendImg(c, im, iw, ih, W, H, hp, oy) {
+  // الامتداد: أول/آخر صفوف الصورة ممدودة ثم مموّهة بقوة، والصورة الحادّة فوقها بحوافّ متلاشية
+  var k = ih / hp, e = 28 * k, mw = Math.round(W / 6), f = mw / W, mid = mkCanvas(mw, H * f), m = mid.getContext('2d');
+  m.imageSmoothingEnabled = true; m.imageSmoothingQuality = 'high';
+  m.drawImage(im, 0, 0, iw, ih, 0, oy * f, mw, hp * f);
+  if (oy > 1) m.drawImage(im, 0, 0, iw, e, 0, 0, mw, (oy + 30) * f);
+  if (oy + hp < H - 1) m.drawImage(im, 0, ih - e, iw, e, 0, (oy + hp - 30) * f, mw, (H - oy - hp + 30) * f);
+  var useF = typeof c.filter === 'string';
+  if (useF) { c.save(); c.filter = 'blur(28px)'; c.drawImage(mid, -50, -50, W + 100, H + 100); c.restore(); }
+  else { var sm = mkCanvas(mw / 4, H * f / 4), q = sm.getContext('2d'); q.imageSmoothingQuality = 'high'; q.drawImage(mid, 0, 0, sm.width, sm.height);
+    m.clearRect(0, 0, mid.width, mid.height); m.drawImage(sm, 0, 0, mid.width, mid.height); c.drawImage(mid, 0, 0, W, H); }
+  var F = 150, fc = mkCanvas(W, hp), x = fc.getContext('2d'); x.imageSmoothingQuality = 'high';
+  x.drawImage(im, 0, 0, iw, ih, 0, 0, W, hp); x.globalCompositeOperation = 'destination-in';
+  var g = x.createLinearGradient(0, 0, 0, hp), top = oy > 1, bot = oy + hp < H - 1;
+  g.addColorStop(0, top ? 'rgba(0,0,0,0)' : '#000'); g.addColorStop(F / hp, '#000'); g.addColorStop(1 - F / hp, '#000'); g.addColorStop(1, bot ? 'rgba(0,0,0,0)' : '#000');
+  x.fillStyle = g; x.fillRect(0, 0, W, hp);
+  c.drawImage(fc, 0, oy);
+}
+function scrim(c, t, s, W, H, story) {
+  var my = function (y) { return (story ? storyY(t, y) : y) * H; }, mx = function (x) { return (story ? storyX(t, x) : x) * W; };
+  c.save();
+  if (s[0] === 'r') { var cx = mx(s[1]), cy = my(s[2]), rx = s[3] * W * (story && t.sx && t.sx.m === 'cover' ? 1.42 : 1), ry = Math.max(cy - my(s[2] - s[4]), my(s[2] + s[4]) - cy);
+    c.translate(cx, cy); c.scale(1, ry / rx); var g = c.createRadialGradient(0, 0, 0, 0, 0, rx);
+    g.addColorStop(0, rgba(s[5], s[6])); g.addColorStop(0.55, rgba(s[5], s[6] * 0.7)); g.addColorStop(1, rgba(s[5], 0)); c.fillStyle = g; c.fillRect(-rx, -rx, rx * 2, rx * 2); }
+  else { var y0 = my(s[1]), y1 = my(s[2]); if (s[2] >= 1) y1 = H; if (s[1] <= 0) y0 = 0; var lg = c.createLinearGradient(0, y0, 0, y1); lg.addColorStop(0, rgba(s[3], s[4])); lg.addColorStop(1, rgba(s[3], s[5])); c.fillStyle = lg; c.fillRect(0, y0, W, y1 - y0 + 1); }
+  c.restore();
+}
+
+/* رصّ العناصر داخل المنطقة الفارغة للتصميم (يُحسب مرة لكل تصميم ومقاس) */
+var IMG_SIZE = { logo: 130, year: 30, greeting: 170, sub: 44, name: 80, sender: 38 };
+var GAP = { logo: 30, year: 26, greeting: 26, sub: 40, name: 40, sender: 16 };
+var layCache = {};
+function imgLayout(t, size) {
+  var key = t.id + size; if (layCache[key]) return layCache[key];
+  var story = size === 'story', H = story ? 1920 : 1350, f = story ? 1.1 : 1, out = {};
+  var col = t.col, sz = function (k) { return Math.round(((t.sz && t.sz[k]) || IMG_SIZE[k]) * f); };
+  if (story && t.scol) col = t.scol;
+  var sc2 = story && t.scol, cx = sc2 ? col[0] : story ? storyX(t, col[0]) : col[0], cw = Math.min(0.94, col[1] * (story && t.sx && t.sx.m === 'cover' ? 1.42 : 1));
+  var y0 = (story && !sc2 ? storyY(t, col[2]) : col[2]) * H, y1 = (story && !sc2 ? storyY(t, col[3]) : col[3]) * H;
+  var order = (t.order || ['logo', 'year', 'greeting', 'sub', 'name', 'sender']).filter(function (k) { return !(t.sep && t.sep[k]); });
+  var look = function (k) { return (t.look && t.look[LOOKKEY[k]]) || []; };
+  var hOf = function (k, s) { if (k === 'logo') return s; var F = FONTS[look(k)[0] || 'amiri'] || FONTS.amiri, px = s * F.sc; return k === 'greeting' ? px * (F.h || 1.3) : k === 'name' ? px * 1.45 : px * 1.3; };
+  var sizes = {}, total = 0, gaps = 0;
+  order.forEach(function (k, i) { sizes[k] = sz(k); total += hOf(k, sizes[k]); if (i < order.length - 1) gaps += GAP[k] * f; });
+  var free = y1 - y0 - total, gs = gaps ? Math.max(0.5, Math.min(2.2, free / gaps)) : 1;
+  if (free < gaps * 0.5) { var shrink = (y1 - y0 - gaps * 0.5) / total; order.forEach(function (k) { sizes[k] = Math.round(sizes[k] * shrink); }); total *= shrink; }
+  var used = total + gaps * gs, y = (y0 + y1) / 2 - used / 2;
+  order.forEach(function (k) { var h = hOf(k, sizes[k]); out[k] = { x: cx, y: (y + h / 2) / H, s: sizes[k], w: cw }; y += h + GAP[k] * gs * f; });
+  Object.keys(t.sep || {}).forEach(function (k) { var p = t.sep[k], q = story && t.ssep && t.ssep[k]; out[k] = { x: q ? q[0] : story ? storyX(t, p[0]) : p[0], y: q ? q[1] : story ? storyY(t, p[1]) : p[1], s: sz(k), w: Math.min(0.92, cw + 0.2) }; });
+  LAYERS.forEach(function (k) { if (!out[k]) out[k] = { x: cx, y: 0.5, s: sz(k), w: cw }; });
+  return (layCache[key] = out);
+}
+
 var DEF_LAY = { portrait: { logo: 0.13, greeting: 0.32, sub: 0.44, name: 0.58, sender: 0.73, year: 0.82 }, story: { logo: 0.16, greeting: 0.35, sub: 0.445, name: 0.57, sender: 0.7, year: 0.78 } };
 var DEF_SIZE = { logo: 210, greeting: 170, sub: 58, name: 90, sender: 50, year: 40 };
 var LAYERS = ['logo', 'greeting', 'sub', 'name', 'sender', 'year'];
@@ -687,7 +895,8 @@ var SUBS = {
 var OCC = { fitr: { n: 'عيد الفطر', yr: 'عيد الفطر المبارك ١٤٤٨هـ', g: 'عيد فطر سعيد' }, adha: { n: 'عيد الأضحى', yr: 'عيد الأضحى المبارك ١٤٤٨هـ', g: 'عيد أضحى مبارك' } };
 
 function tplById(id) { for (var i = 0; i < TPL.length; i++) if (TPL[i].id === id) return TPL[i]; return TPL[0]; }
-function tplsFor(occ) { return TPL.filter(function (t) { return t.occ === 'both' || t.occ === occ; }); }
+function tplsFor(occ) { return TPL.filter(function (t) { return !t.legacy && (t.occ === 'both' || t.occ === occ); }); }
+function defTpl(occ) { return tplsFor(occ)[0].id; }
 
 function defaults(occ) {
   var st = { v: 1, occ: occ, tpl: 'emerald', size: 'portrait', pal: {}, photo: { dim: 0.45, deco: true },
@@ -699,24 +908,29 @@ function defaults(occ) {
       sender: { on: true, t: 'تهنئة مقدّمة من عائلة آل سعيد', f: 'amiri', st: 'solid', c: null, c2: null, s: DEF_SIZE.sender, x: 0.5, y: 0.73 },
       year: { on: true, t: OCC[occ].yr, f: 'messiri', st: 'solid', c: null, c2: null, s: DEF_SIZE.year, x: 0.5, y: 0.82 }
     } };
-  applyTpl(st, 'emerald');
+  applyTpl(st, defTpl(occ));
   return st;
 }
 var LOOKKEY = { greeting: 'g', sub: 's', name: 'n', sender: 'd', year: 'y' };
 function applyTpl(st, id, keepPos) {
   var t = tplById(id); st.tpl = t.id; st.pal = {};
-  var lay = (t.lay && t.lay[st.size]) || DEF_LAY[st.size];
+  var lay = (t.lay && t.lay[st.size]) || DEF_LAY[st.size], il = t.img && imgLayout(t, st.size);
   LAYERS.forEach(function (k) {
-    var L = st.L[k]; if (!keepPos) { L.x = 0.5; L.y = lay[k]; L.s = Math.round(DEF_SIZE[k] * (st.size === 'story' ? 1.12 : 1)); }
+    var L = st.L[k];
+    if (il) { if (!keepPos) { L.x = il[k].x; L.y = il[k].y; L.s = il[k].s; } L.w = il[k].w; }
+    else { if (!keepPos) { L.x = 0.5; L.y = lay[k]; L.s = Math.round(DEF_SIZE[k] * (st.size === 'story' ? 1.12 : 1)); } if (k !== 'greeting') delete L.w; }
     var lk = LOOKKEY[k]; if (!lk) return;
     var look = (t.look && t.look[lk]) || [];
     L.f = look[0] || (k === 'greeting' ? 'ruqaa' : 'amiri'); L.st = look[1] || 'solid';
     L.c = look[2] === 'acc' ? t.pal.acc : (look[2] || null); L.c2 = look[4] || null;
-    if (k === 'greeting') { L.o = look[3] || 'none'; L.w = t.gw || 0.88; }
+    if (k === 'greeting') { L.o = look[3] || 'none'; if (!il) L.w = t.gw || 0.88; }
   });
   return st;
 }
-function relayout(st) { var t = tplById(st.tpl), lay = (t.lay && t.lay[st.size]) || DEF_LAY[st.size], f = st.size === 'story' ? 1.12 : 1 / 1.12; LAYERS.forEach(function (k) { st.L[k].y = lay[k]; st.L[k].x = 0.5; st.L[k].s = Math.round(st.L[k].s * f); }); }
+function relayout(st) { var t = tplById(st.tpl);
+  if (t.img) { var a = imgLayout(t, st.size), b = imgLayout(t, st.size === 'story' ? 'portrait' : 'story');
+    LAYERS.forEach(function (k) { var L = st.L[k]; L.x = a[k].x; L.y = a[k].y; L.w = a[k].w; L.s = Math.round(L.s * a[k].s / (b[k].s || a[k].s)); }); return; }
+  var lay = (t.lay && t.lay[st.size]) || DEF_LAY[st.size], f = st.size === 'story' ? 1.12 : 1 / 1.12; LAYERS.forEach(function (k) { st.L[k].y = lay[k]; st.L[k].x = 0.5; st.L[k].s = Math.round(st.L[k].s * f); }); }
 
 /* ---------- رسم النصوص ---------- */
 function foil(c, base, y0, y1) { return vg(c, y0, y1, [[0, dk(base, 0.38)], [0.28, lt(base, 0.5)], [0.48, base], [0.62, lt(base, 0.72)], [0.82, dk(base, 0.12)], [1, dk(base, 0.42)]]); }
@@ -795,24 +1009,25 @@ function watermark(c, W, H) {
 /* ---------- الرسم الكامل ---------- */
 var bgCache = { key: '', cv: null };
 function palOf(st) { var t = tplById(st.tpl), P = {}; for (var k in t.pal) P[k] = t.pal[k]; for (var q in (st.pal || {})) if (st.pal[q]) P[q] = st.pal[q]; return P; }
-function paintBase(c, st, W, H, imgs) {
+function paintBase(c, st, W, H, imgs, small) {
   var t = tplById(st.tpl), P = palOf(st), R = rng(t.id + st.size), bgimg = imgs && imgs.bg;
   if (bgimg && bgimg.width) {
-    coverImg(c, bgimg, W, H); var d = st.photo ? st.photo.dim : 0.45;
+    c.imageSmoothingQuality = 'high'; coverImg(c, bgimg, W, H); var d = st.photo ? st.photo.dim : 0.45;
     if (d > 0) { c.fillStyle = rgba(P.bg2 || P.bg, d); c.fillRect(0, 0, W, H); }
-    if (!st.photo || st.photo.deco !== false) t.fg(c, W, H, P, rng(t.id + 'fg' + st.size));
-  } else { t.bg(c, W, H, P, R); t.fg(c, W, H, P, rng(t.id + 'fg' + st.size)); }
+    if (!t.img && (!st.photo || st.photo.deco !== false)) t.fg(c, W, H, P, rng(t.id + 'fg' + st.size));
+  } else if (t.img) paintImg(c, t, W, H, P, st.size === 'story', small);
+  else { t.bg(c, W, H, P, R); t.fg(c, W, H, P, rng(t.id + 'fg' + st.size)); }
 }
 function render(cv, st, o) {
   o = o || {};
   var sz = SIZES[st.size] || SIZES.portrait, W = sz[0], H = sz[1], scale = o.scale || (cv.width / W);
   if (cv.width !== Math.round(W * scale) || cv.height !== Math.round(H * scale)) { cv.width = Math.round(W * scale); cv.height = Math.round(H * scale); }
-  var c = cv.getContext('2d'), imgs = o.imgs || {};
-  var key = [st.tpl, st.size, JSON.stringify(st.pal || {}), st.photo && st.photo.dim, st.photo && st.photo.deco, imgs.bg ? (imgs.bg.src || '').slice(-40) + imgs.bg.width : '', cv.width].join('|');
+  var c = cv.getContext('2d'), imgs = o.imgs || {}, small = scale < 0.35, T0 = tplById(st.tpl), bi = T0.img ? bgOf(T0.id, small) : null;
+  var key = [st.tpl, bi ? bi.src.slice(-14) : '-', st.size, JSON.stringify(st.pal || {}), st.photo && st.photo.dim, st.photo && st.photo.deco, imgs.bg ? (imgs.bg.src || '').slice(-40) + imgs.bg.width : '', cv.width].join('|');
   if (o.cache !== false && typeof document !== 'undefined') {
-    if (bgCache.key !== key) { var b = bgCache.cv || document.createElement('canvas'); b.width = cv.width; b.height = cv.height; var bc = b.getContext('2d'); bc.setTransform(scale, 0, 0, scale, 0, 0); paintBase(bc, st, W, H, imgs); bgCache = { key: key, cv: b }; }
+    if (bgCache.key !== key) { var b = bgCache.cv || document.createElement('canvas'); b.width = cv.width; b.height = cv.height; var bc = b.getContext('2d'); bc.setTransform(scale, 0, 0, scale, 0, 0); paintBase(bc, st, W, H, imgs, small); bgCache = { key: key, cv: b }; }
     c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height); c.drawImage(bgCache.cv, 0, 0); c.setTransform(scale, 0, 0, scale, 0, 0);
-  } else { c.setTransform(scale, 0, 0, scale, 0, 0); paintBase(c, st, W, H, imgs); }
+  } else { c.setTransform(scale, 0, 0, scale, 0, 0); paintBase(c, st, W, H, imgs, small); }
   var P = palOf(st), hits = [];
   if (st.L.logo.on) { var lb = drawLogo(c, st.L.logo, imgs.logo, W, H); if (lb) hits.push(lb); }
   ['greeting', 'sub', 'name', 'sender', 'year'].forEach(function (k) {
@@ -831,7 +1046,7 @@ function render(cv, st, o) {
 /* حالة آمنة: تقبل فقط الحقول المعروفة (تُستخدم في المحرّر والعارض) */
 function sanitize(d, occ) {
   var base = defaults(occ || (d && d.occ) || 'fitr'); if (!d || typeof d !== 'object') return base;
-  var o = base; o.occ = d.occ === 'adha' ? 'adha' : 'fitr'; o.tpl = tplById(d.tpl).id; o.size = SIZES[d.size] ? d.size : 'portrait';
+  var o = base; o.occ = d.occ === 'adha' ? 'adha' : 'fitr'; o.tpl = tplById(d.tpl).id; o.size = SIZES[d.size] ? d.size : 'portrait'; applyTpl(o, o.tpl);
   var hex = /^#[0-9a-fA-F]{6}$/;
   o.pal = {}; if (d.pal) for (var k in d.pal) if (/^[a-z0-9]{1,6}$/.test(k) && hex.test(d.pal[k])) o.pal[k] = d.pal[k];
   if (d.photo) o.photo = { dim: Math.max(0, Math.min(0.9, +d.photo.dim || 0)), deco: d.photo.deco !== false };
@@ -839,7 +1054,7 @@ function sanitize(d, occ) {
     ['on', 'ln'].forEach(function (b) { if (b in s) L[b] = !!s[b]; });
     ['x', 'y'].forEach(function (n) { if (isFinite(s[n])) L[n] = Math.max(-0.1, Math.min(1.1, +s[n])); });
     if (isFinite(s.s)) L.s = Math.max(12, Math.min(600, +s.s));
-    if (isFinite(s.w)) L.w = Math.max(0.3, Math.min(1, +s.w));
+    if (isFinite(s.w)) L.w = Math.max(0.3, Math.min(1, +s.w)); else if (k === 'greeting') L.w = 0.88; else delete L.w;
     if (isFinite(s.k)) L.k = Math.max(0, Math.min(6, s.k | 0));
     ['t', 'label', 'ph'].forEach(function (n) { if (typeof s[n] === 'string') L[n] = s[n].slice(0, n === 't' ? 160 : 40); });
     if (FONTS[s.f]) L.f = s.f;
@@ -852,6 +1067,7 @@ function sanitize(d, occ) {
 }
 
 G.EID = { SIZES: SIZES, FONTS: FONTS, CALLI: CALLI, TEXTF: TEXTF, FONT_CSS: FONT_CSS, TPL: TPL, PHRASES: PHRASES, SUBS: SUBS, OCC: OCC, LAYERS: LAYERS, LNAMES: LNAMES,
+  BG_BASE: BG_BASE, loadBg: loadBg, onBg: onBg, bgSrc: bgSrc, defTpl: defTpl, imgLayout: imgLayout,
   tplById: tplById, tplsFor: tplsFor, defaults: defaults, applyTpl: applyTpl, relayout: relayout, render: render, loadFonts: loadFonts, kashida: kashida, palOf: palOf, sanitize: sanitize, fontStr: fontStr, textColor: textColor };
 })(window);
 
@@ -882,6 +1098,7 @@ function set(path,v){var p=path.split("."),o=S;for(var i=0;i<p.length-1;i++)o=o[
 var saveT; function save(){clearTimeout(saveT);saveT=setTimeout(function(){ls("st",JSON.stringify(S))},300)}
 var raf=0; function draw(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;R=EID.render(cv,S,{imgs:{logo:IMG.logo.img,bg:IMG.bg.img},name:$("#tryName").value,wm:!ACT,sel:SEL})})}
 var R=null, fontT;
+EID.onBg(function(id){if(id===S.tpl){R=null;draw()}});
 function refresh(){save();draw();clearTimeout(fontT);fontT=setTimeout(function(){EID.loadFonts(S,$("#tryName").value+"محمد عبدالله").then(function(){EID.render(cv,S,{imgs:{logo:IMG.logo.img,bg:IMG.bg.img},name:$("#tryName").value,wm:!ACT,sel:SEL,cache:true});R=null;draw()})},120)}
 
 /* ---------- أدوات واجهة ---------- */
@@ -914,7 +1131,7 @@ $("#logoCtl").innerHTML='<div class="grid" style="margin-top:10px"><div class="f
  '<div class="f"><label>خلفية الشعار</label><select data-b="L.logo.plate">'+opt([["none","بلا خلفية"],["circle","دائرة بيضاء"],["round","مربع أبيض"]])+'</select></div>'+
  '<div class="f"><label>إزالة البياض</label><select data-b="L.logo.blend">'+opt([["normal","لا"],["multiply","دمج (للشعار بخلفية بيضاء على تصميم فاتح)"]])+'</select></div>'+
  '<div class="f"><span>&nbsp;</span><label class="chk"><input type="checkbox" data-b="L.logo.on"> إظهار</label></div></div>';
-var PALN={bg:"الخلفية",bg2:"الخلفية الثانية",acc:"الزخارف",ink:"لون النص الأساسي"};
+var PALN={bg:"الخلفية",bg2:"الخلفية الثانية",acc:"لون العبارة والزخارف",ink:"لون النص الأساسي"};
 $("#palCtl").innerHTML=Object.keys(PALN).map(function(k){return '<div class="f"><label>'+PALN[k]+'</label><input type="color" data-pal="'+k+'"></div>'}).join("");
 
 /* ربط الحقول بالحالة */
@@ -926,7 +1143,7 @@ function sync(){
   else if(el.hasAttribute("data-flip"))el.value=1-v;
   else if(document.activeElement!==el)el.value=v==null?"":v});
  $$("[data-out]").forEach(function(el){var v=get(el.getAttribute("data-out"));el.textContent=typeof v==="number"?(v<1&&v>0?ar(Math.round(v*100))+"٪":ar(Math.round(v))):""});
- var P=EID.palOf(S);$$("[data-pal]").forEach(function(el){el.value=P[el.getAttribute("data-pal")]});
+ var P=EID.palOf(S),isImg=!!EID.tplById(S.tpl).img;$$("[data-pal]").forEach(function(el){el.value=P[el.getAttribute("data-pal")];var k=el.getAttribute("data-pal");el.parentNode.hidden=isImg&&(k==="bg"||k==="bg2")});$("#decoF").hidden=isImg;
  $$("#phrases .chip").forEach(function(b){b.setAttribute("aria-pressed",String(b.textContent===S.L.greeting.t))});
  $$("#gFonts .fbtn").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-f")===S.L.greeting.f))});
  $$("#sizeSeg button").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-size")===S.size))});
@@ -955,7 +1172,7 @@ function thumbs(){var box=$("#thumbs");box.className="thumbs";var list=EID.tplsF
  $$(".thumb",box).forEach(function(b){b.classList.toggle("story",S.size==="story")});
  var tmp=document.createElement("canvas"),i=0;
  var sts=list.map(function(t){var st=JSON.parse(JSON.stringify(S));st.pal={};EID.applyTpl(st,t.id);st.L.logo.on=false;return st});
- Promise.all(sts.map(function(st){return EID.loadFonts(st)})).then(function(){
+ Promise.all(sts.map(function(st){return EID.loadFonts(st,"",true)})).then(function(){
  (function next(){if(i>=list.length)return;var st=sts[i],b=box.children[i++];
   EID.render(tmp,st,{scale:0.22,name:"",final:true,cache:false});b.querySelector("img").src=tmp.toDataURL("image/jpeg",0.82);setTimeout(next,0)})()});
  sync()}
