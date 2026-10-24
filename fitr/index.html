@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>بطاقة معايدة عيد الفطر — مجودة</title>
-<!--pwa--><link rel="icon" type="image/png" sizes="32x32" href="/favicon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="app.webmanifest"><meta name="apple-mobile-web-app-title" content="معايدة الفطر"><meta name="application-name" content="معايدة الفطر"><meta name="theme-color" content="#0a6d73"><!--/pwa-->
+<link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="description" content="صمّم بطاقة معايدة عيد الفطر لعائلتك أو شركتك من 15 تصميماً فاخراً بخطوط عربية مذهّبة، أضف شعارك وانشر رابطاً يكتب فيه كل مستلم اسمه ويحفظ البطاقة.">
 <meta property="og:title" content="بطاقة معايدة عيد الفطر — مجودة"><meta property="og:description" content="صمّم بطاقة معايدة عيد الفطر لعائلتك أو شركتك من 15 تصميماً فاخراً بخطوط عربية مذهّبة، أضف شعارك وانشر رابطاً يكتب فيه كل مستلم اسمه ويحفظ البطاقة."><meta property="og:type" content="website"><meta property="og:image" content="https://eidcard.majoodah.com/img/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,6 +83,13 @@ select{-webkit-appearance:none;-moz-appearance:none;appearance:none;background-i
 select:dir(rtl){background-position:left 11px center!important}select:dir(ltr){background-position:right 11px center!important}
 select::-ms-expand{display:none}
 [hidden]{display:none!important}
+
+.arts{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.art{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:8px 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px}
+.art img{height:54px;max-width:100%;object-fit:contain;opacity:.92}
+.art b{height:54px;display:grid;place-items:center;font-size:30px}
+.art small{font-size:12px}
+.art[aria-pressed=true]{border-color:var(--teal,#0a6d73);box-shadow:0 0 0 3px rgba(10,109,115,.18)}
 </style>
 </head>
 <body>
@@ -122,6 +129,11 @@ select::-ms-expand{display:none}
    </div>
   </section>
   <section class="view" id="v-greet" hidden>
+   <div class="card">
+    <h2>مخطوطة التهنئة</h2>
+    <p class="lead">مخطوطات العيد جاهزة تُلوَّن بألوان التصميم أو بالذهب. أو اختر «كتابة بخط» لتكتب عبارتك بنفسك.</p>
+    <div class="arts" id="arts"></div>
+   </div>
    <div class="card">
     <h2>العبارة</h2>
     <div class="chips" id="phrases"></div>
@@ -257,6 +269,7 @@ function loadFonts(st, extra, small) {
   var bgp = loadBg(st.tpl, small);
   if (!document.fonts || !document.fonts.load) return bgp;
   var jobs = [bgp];
+  if (st.L.greeting && st.L.greeting.art) jobs.push(loadArt(st.L.greeting.art));
   LAYERS.forEach(function (k) {
     var L = st.L[k]; if (!L || !L.f) return;
     var t = (L.t || '') + (k === 'name' ? (L.ph || '') + (extra || '') : '');
@@ -881,6 +894,27 @@ function imgLayout(t, size) {
 
 var DEF_LAY = { portrait: { logo: 0.13, greeting: 0.32, sub: 0.44, name: 0.58, sender: 0.73, year: 0.82 }, story: { logo: 0.16, greeting: 0.35, sub: 0.445, name: 0.57, sender: 0.7, year: 0.78 } };
 var DEF_SIZE = { logo: 210, greeting: 170, sub: 58, name: 90, sender: 50, year: 40 };
+/* مخطوطات العيد ٢٠٢٦: عبارة التهنئة كرسمة خطاطة جاهزة (قناع أبيض على شفاف في /mk/<id>.png) تُلوَّن بلون القالب أو بالذهب */
+var ART = {
+  mubarak:  { n: 'عيد مبارك', t: 'عيد مبارك' },
+  saeed:    { n: 'عيد سعيد', t: 'عيد سعيد' },
+  eidkum:   { n: 'عيدكم مبارك', t: 'عيدكم مبارك' },
+  kulam:    { n: 'كل عام وأنتم بخير', t: 'كل عام وأنتم بخير' },
+  awaydah:  { n: 'عساكم من عوّاده', t: 'عساكم من عوّاده' },
+  farha:    { n: 'العيد فرحة', t: 'العيد فرحة' },
+  jana:     { n: 'جانا العيد', t: 'جانا العيد' },
+  happyeid: { n: 'عاد عيدكم', t: 'عاد عيدكم · Happy Eid' }
+};
+var ART_ORDER = ['mubarak', 'saeed', 'eidkum', 'kulam', 'awaydah', 'farha', 'jana', 'happyeid'];
+var ART_BASE = '/mk/', artImg = {};
+function loadArt(id) {
+  if (!ART[id] || typeof Image === 'undefined') return Promise.resolve(null);
+  if (artImg[id]) return artImg[id].p;
+  var im = new Image(), rec = { im: im };
+  rec.p = new Promise(function (res) { im.onload = function () { rec.ok = true; res(im); }; im.onerror = function () { res(null); }; });
+  im.src = ART_BASE + id + '.png'; artImg[id] = rec; return rec.p;
+}
+function artReady(id) { var r = artImg[id]; return r && r.ok ? r.im : null; }
 var LAYERS = ['logo', 'greeting', 'sub', 'name', 'sender', 'year'];
 var LNAMES = { logo: 'الشعار', greeting: 'عبارة التهنئة', sub: 'الرسالة', name: 'الاسم', sender: 'المرسل', year: 'السطر الصغير' };
 
@@ -923,7 +957,8 @@ function applyTpl(st, id, keepPos) {
     var look = (t.look && t.look[lk]) || [];
     L.f = look[0] || (k === 'greeting' ? 'ruqaa' : 'amiri'); L.st = look[1] || 'solid';
     L.c = look[2] === 'acc' ? t.pal.acc : (look[2] || null); L.c2 = look[4] || null;
-    if (k === 'greeting') { L.o = look[3] || 'none'; if (!il) L.w = t.gw || 0.88; }
+    if (k === 'greeting') { L.o = look[3] || 'none'; if (!il) L.w = t.gw || 0.88;
+      var ti = TPL.indexOf(t); L.art = t.art || ART_ORDER[(ti < 0 ? 0 : ti) % ART_ORDER.length]; L.t = ART[L.art].t; }
   });
   return st;
 }
@@ -972,6 +1007,26 @@ function drawText(c, k, L, P, W, H, text, opt) {
   var box = { k: k, x0: x - mw / 2, x1: x + mw / 2, y0: top, y1: bot, px: px, col: col };
   if (k === 'greeting' && L.o && L.o !== 'none' && !(opt && opt.faded)) ornament(c, L.o, box, sty === 'foil' ? col : col, W);
   if (k === 'name' && L.ln) { divider(c, x, bot + px * 0.12, Math.max(160, mw * 0.65), col, 7); box.y1 += px * 0.2; }
+  return box;
+}
+function drawArt(c, L, P, W, H, img, opt) {
+  var col = textColor('greeting', L, P), col2 = L.c2 || lt(col, 0.35);
+  var maxW = W * (L.w || 0.88) * 0.82, maxH = L.s * 1.3, r = Math.min(maxW / img.width, maxH / img.height);
+  var w = img.width * r, h = img.height * r, x = L.x * W - w / 2, y = L.y * H - h / 2;
+  var t = document.createElement('canvas'); t.width = Math.max(1, Math.round(w)); t.height = Math.max(1, Math.round(h));
+  var tc = t.getContext('2d'); tc.drawImage(img, 0, 0, t.width, t.height); tc.globalCompositeOperation = 'source-in';
+  var sty = L.st;
+  if (sty === 'foil') tc.fillStyle = foil(tc, col, 0, t.height);
+  else if (sty === 'two') { var g = tc.createLinearGradient(t.width, 0, 0, 0); g.addColorStop(0, col); g.addColorStop(1, col2); tc.fillStyle = g; }
+  else tc.fillStyle = col;
+  tc.fillRect(0, 0, t.width, t.height);
+  c.save(); if (opt && opt.faded) c.globalAlpha = 0.38;
+  if (sty === 'foil' || sty === 'shadow' || sty === 'emboss') { c.shadowColor = 'rgba(0,0,0,' + (sty === 'shadow' ? '.45' : '.35') + ')'; c.shadowBlur = h * 0.04; c.shadowOffsetY = h * 0.018; }
+  else if (sty === 'glow') { c.shadowColor = col2; c.shadowBlur = h * 0.18; }
+  c.drawImage(t, x, y, w, h); if (sty === 'glow') c.drawImage(t, x, y, w, h);
+  c.restore();
+  var box = { k: 'greeting', x0: x, x1: x + w, y0: y, y1: y + h, px: Math.min(h * 0.5, L.s), col: col };
+  if (L.o && L.o !== 'none' && !(opt && opt.faded)) ornament(c, L.o, box, col, W);
   return box;
 }
 function ornament(c, o, b, col, W) {
@@ -1035,7 +1090,9 @@ function render(cv, st, o) {
     var text = L.t, faded = false;
     if (k === 'greeting') text = kashida(L.t, L.k);
     if (k === 'name') { text = (o.name || '').trim(); if (!text && !o.final) { text = L.ph || 'اسمك هنا'; faded = true; } }
-    var b = drawText(c, k, L, P, W, H, text, { faded: faded }); if (b) hits.push(b);
+    var ai = k === 'greeting' && L.art ? artReady(L.art) : null;
+    if (k === 'greeting' && L.art && !ai) loadArt(L.art);
+    var b = ai ? drawArt(c, L, P, W, H, ai, { faded: faded }) : drawText(c, k, L, P, W, H, text, { faded: faded }); if (b) hits.push(b);
   });
   if (o.wm) watermark(c, W, H);
   if (o.sel) hits.forEach(function (b) { if (b.k !== o.sel) return; c.save(); c.setLineDash([12, 8]); c.lineWidth = 3; c.strokeStyle = 'rgba(255,255,255,.95)'; c.strokeRect(b.x0 - 14, b.y0 - 10, b.x1 - b.x0 + 28, b.y1 - b.y0 + 20); c.strokeStyle = 'rgba(10,109,115,.95)'; c.lineDashOffset = 10; c.strokeRect(b.x0 - 14, b.y0 - 10, b.x1 - b.x0 + 28, b.y1 - b.y0 + 20); c.restore(); });
@@ -1058,6 +1115,7 @@ function sanitize(d, occ) {
     if (isFinite(s.k)) L.k = Math.max(0, Math.min(6, s.k | 0));
     ['t', 'label', 'ph'].forEach(function (n) { if (typeof s[n] === 'string') L[n] = s[n].slice(0, n === 't' ? 160 : 40); });
     if (FONTS[s.f]) L.f = s.f;
+    if (k === 'greeting') L.art = (typeof s.art === 'string' && ART[s.art]) ? s.art : ''; // تصاميم محفوظة قبل المخطوطات تبقى بخطها
     if (/^(solid|foil|two|outline|emboss|glow|shadow)$/.test(s.st)) L.st = s.st;
     if (/^(none|dots|stars|swash|crescent|cartouche)$/.test(s.o)) L.o = s.o;
     if (/^(normal|multiply)$/.test(s.blend)) L.blend = s.blend;
@@ -1066,7 +1124,7 @@ function sanitize(d, occ) {
   return o;
 }
 
-G.EID = { SIZES: SIZES, FONTS: FONTS, CALLI: CALLI, TEXTF: TEXTF, FONT_CSS: FONT_CSS, TPL: TPL, PHRASES: PHRASES, SUBS: SUBS, OCC: OCC, LAYERS: LAYERS, LNAMES: LNAMES,
+G.EID = { ART: ART, ART_ORDER: ART_ORDER, loadArt: loadArt, artReady: artReady, SIZES: SIZES, FONTS: FONTS, CALLI: CALLI, TEXTF: TEXTF, FONT_CSS: FONT_CSS, TPL: TPL, PHRASES: PHRASES, SUBS: SUBS, OCC: OCC, LAYERS: LAYERS, LNAMES: LNAMES,
   BG_BASE: BG_BASE, loadBg: loadBg, onBg: onBg, bgSrc: bgSrc, defTpl: defTpl, imgLayout: imgLayout,
   tplById: tplById, tplsFor: tplsFor, defaults: defaults, applyTpl: applyTpl, relayout: relayout, render: render, loadFonts: loadFonts, kashida: kashida, palOf: palOf, sanitize: sanitize, fontStr: fontStr, textColor: textColor };
 })(window);
@@ -1144,7 +1202,8 @@ function sync(){
   else if(document.activeElement!==el)el.value=v==null?"":v});
  $$("[data-out]").forEach(function(el){var v=get(el.getAttribute("data-out"));el.textContent=typeof v==="number"?(v<1&&v>0?ar(Math.round(v*100))+"٪":ar(Math.round(v))):""});
  var P=EID.palOf(S),isImg=!!EID.tplById(S.tpl).img;$$("[data-pal]").forEach(function(el){el.value=P[el.getAttribute("data-pal")];var k=el.getAttribute("data-pal");el.parentNode.hidden=isImg&&(k==="bg"||k==="bg2")});$("#decoF").hidden=isImg;
- $$("#phrases .chip").forEach(function(b){b.setAttribute("aria-pressed",String(b.textContent===S.L.greeting.t))});
+ $$("#phrases .chip").forEach(function(b){b.setAttribute("aria-pressed",String(!S.L.greeting.art&&b.textContent===S.L.greeting.t))});
+ $$("#arts .art").forEach(function(b){b.setAttribute("aria-pressed",String((S.L.greeting.art||"")===b.getAttribute("data-art")))});
  $$("#gFonts .fbtn").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-f")===S.L.greeting.f))});
  $$("#sizeSeg button").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-size")===S.size))});
  $$("#thumbs .thumb").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-t")===S.tpl))});
@@ -1161,10 +1220,13 @@ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.c
 
 /* العبارات والخطوط */
 $("#phrases").innerHTML=EID.PHRASES[OCC].map(function(s){return '<button class="chip">'+s+'</button>'}).join("");
-$("#phrases").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;S.L.greeting.t=b.textContent;S.L.greeting.on=true;gFontsLabels();sync();refresh()});
+$("#arts").innerHTML='<button class="art" data-art=""><b>Aa</b><small>كتابة بخط</small></button>'+EID.ART_ORDER.map(function(id){return '<button class="art" data-art="'+id+'"><img src="/mk/'+id+'.png" alt="'+EID.ART[id].n+'"><small>'+EID.ART[id].n+'</small></button>'}).join("");
+$("#gText").addEventListener("input",function(){if(S.L.greeting.art){S.L.greeting.art="";refresh()}});
+$("#arts").addEventListener("click",function(e){var b=e.target.closest(".art");if(!b)return;var id=b.getAttribute("data-art");S.L.greeting.art=id;S.L.greeting.on=true;if(id)S.L.greeting.t=EID.ART[id].t;gFontsLabels();sync();refresh()});
+$("#phrases").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;S.L.greeting.art="";S.L.greeting.t=b.textContent;S.L.greeting.on=true;gFontsLabels();sync();refresh()});
 $("#gFonts").innerHTML=EID.CALLI.map(function(id){var F=EID.FONTS[id];return '<button class="fbtn" data-f="'+id+'" style="font-family:\''+F.f+'\';font-weight:'+F.w+'"><b></b><small>'+F.n+(F.ink?' (ألوانه ثابتة)':'')+'</small></button>'}).join("");
 function gFontsLabels(){var t=(S.L.greeting.t||"عيد سعيد").split("\n")[0];$$("#gFonts .fbtn b").forEach(function(b){b.textContent=t})}
-$("#gFonts").addEventListener("click",function(e){var b=e.target.closest(".fbtn");if(!b)return;S.L.greeting.f=b.getAttribute("data-f");sync();refresh()});
+$("#gFonts").addEventListener("click",function(e){var b=e.target.closest(".fbtn");if(!b)return;S.L.greeting.art="";S.L.greeting.f=b.getAttribute("data-f");sync();refresh()});
 
 /* التصاميم */
 function thumbs(){var box=$("#thumbs");box.className="thumbs";var list=EID.tplsFor(OCC);
